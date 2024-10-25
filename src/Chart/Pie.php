@@ -2202,7 +2202,7 @@ class Pie
         }
 
         if ($DrawLabels) {
-            $Offset = 360;
+            $Offset = 360; 
             foreach ($Values as $Key => $Value) {
                 $StartAngle = $Offset;
                 $EndAngle = $Offset - ($Value * $ScaleFactor);
@@ -2230,11 +2230,12 @@ class Pie
                 $Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) + $X;
                 $Yc = sin(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
 
-                $Label = "";
+                /*$Label = "";
                 if ($WriteValues == PIE_VALUE_PERCENTAGE) {
                     $Label = round((100 / $SerieSum) * $Value, $Precision) . "%";
                 } elseif ($WriteValues == PIE_VALUE_NATURAL) {
                     $Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+                    if ($DrawLabelValues) { $Label .= " {$this->getDisplayValue($Values[$Key], $DrawLabelValues, $SerieSum, $Precision, $ValueSuffix)}"; }
                 }
 
                 if ($LabelStacked) {
@@ -2251,12 +2252,97 @@ class Pie
                     );
                 } else {
                     $this->writePieLabel($Xc, $Yc - $SliceHeight, $Label, $Angle, $Settings, false);
-                }
+                } */
                 $Offset = $EndAngle - $DataGapAngle;
                 $ID--;
                 $Slice++;
             }
         }
+        
+        if ($WriteValues != null && !$Shadow) {
+            $Step = 360 / (2 * PI * $OuterRadius);
+            $Offset = 360;
+            $ID = count($Values) - 1;
+            $Settings = [
+                "Align" => TEXT_ALIGN_MIDDLEMIDDLE,
+                "R" => $ValueR,
+                "G" => $ValueG,
+                "B" => $ValueB,
+                "Alpha" => $ValueAlpha
+            ];
+            foreach ($Values as $Key => $Value) {
+                $EndAngle = $Offset - ($Value * $ScaleFactor);
+                if ($EndAngle < 0) {
+                    $EndAngle = 0;
+                }
+
+                $Angle = ($EndAngle - $Offset) / 2 + $Offset;
+
+                if ($ValuePosition == PIE_VALUE_OUTSIDE) {
+                    $Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius + $ValuePadding) + $X;
+                    $Yc = sin(($Angle - 90) * PI / 180)
+                        * (($OuterRadius * $SkewFactor) + $ValuePadding)
+                        + $Y - $SliceHeight
+                    ;
+                } else {
+                    $Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius * 1.5 ) / 2 + $X;
+                    $Yc = sin(($Angle - 90) * PI / 180) * ($OuterRadius * 1.5 * $SkewFactor) / 2 + $Y - $SliceHeight;
+                }
+
+                $Display = $this->getDisplayValue($Value, $WriteValues, $SerieSum, $Precision, $ValueSuffix);
+                $this->pChartObject->drawText($Xc, $Yc, $Display, $Settings);
+
+                $Offset = $EndAngle - $DataGapAngle;
+                $ID--;
+            }
+        }
+        
+        if ($DrawLabels) {
+            $Step = 360 / (2 * PI * $OuterRadius);
+            $Offset = 360;
+            $ID = count($Values) - 1;
+            foreach ($Values as $Key => $Value) {
+                if ($LabelColor == PIE_LABEL_COLOR_AUTO) {
+                    $Settings = [
+                        "FillR" => $Palette[$ID]["R"],
+                        "FillG" => $Palette[$ID]["G"],
+                        "FillB" => $Palette[$ID]["B"],
+                        "Alpha" => $Palette[$ID]["Alpha"]
+                    ];
+                } else {
+                    $Settings = [
+                        "FillR" => $LabelR,
+                        "FillG" => $LabelG,
+                        "FillB" => $LabelB,
+                        "Alpha" => $LabelAlpha
+                    ];
+                }
+
+                $EndAngle = $Offset - ($Value * $ScaleFactor);
+                if ($EndAngle < 0) {
+                    $EndAngle = 0;
+                }
+
+                $Angle = ($EndAngle - $Offset) / 2 + $Offset;
+                $Xc = cos(($Angle - 90) * PI / 180) * $OuterRadius + $X;
+                $Yc = sin(($Angle - 90) * PI / 180) * $OuterRadius * $SkewFactor + $Y - $SliceHeight;
+
+                if (isset($Data["Series"][$Data["Abscissa"]]["Data"][$ID])) {
+                    $Label = $Data["Series"][$Data["Abscissa"]]["Data"][$ID];
+                    if ($DrawLabelValues) { $Label .= " {$this->getDisplayValue($Values[$Key], $DrawLabelValues, $SerieSum, $Precision, $ValueSuffix)}"; }
+
+                    if ($LabelStacked) {
+                        $this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, true, $X, $Y, $OuterRadius, true);
+                    } else {
+                        $this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, false);
+                    }
+                }
+
+                $Offset = $EndAngle - $DataGapAngle;
+                $ID--;
+            }
+        }
+
         if ($DrawLabels && $LabelStacked) {
             $this->writeShiftedLabels();
         }
