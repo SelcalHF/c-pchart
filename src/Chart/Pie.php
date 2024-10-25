@@ -93,6 +93,7 @@ class Pie
         $BorderB = isset($Format["BorderB"]) ? $Format["BorderB"] : 255;
         $Shadow = isset($Format["Shadow"]) ? $Format["Shadow"] : false;
         $DrawLabels = isset($Format["DrawLabels"]) ? $Format["DrawLabels"] : false;
+        $DrawLabelValues = isset($Format["DrawLabelValues"]) ? $Format["DrawLabelValues"] : null;        
         $LabelStacked = isset($Format["LabelStacked"]) ? $Format["LabelStacked"] : false;
         $LabelColor = isset($Format["LabelColor"]) ? $Format["LabelColor"] : PIE_LABEL_COLOR_MANUAL;
         $LabelR = isset($Format["LabelR"]) ? $Format["LabelR"] : 0;
@@ -280,6 +281,7 @@ class Pie
                 $Yc = sin(($Angle - 90) * PI / 180) * $Radius + $Y;
 
                 $Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+                if ($DrawLabelValues) { $Label .= " {$this->getDisplayValue($Values[$Key], $DrawLabelValues, $SerieSum, $Precision, $ValueSuffix)}"; }
 
                 if ($LabelStacked) {
                     $this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, true, $X, $Y, $Radius);
@@ -370,6 +372,7 @@ class Pie
                     $Yc = sin(($Angle - 90) * PI / 180) * $Radius + $Y;
 
                     $Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+                    if ($DrawLabelValues) { $Label .= " {$this->getDisplayValue($Values[$Key], $DrawLabelValues, $SerieSum, $Precision, $ValueSuffix)}"; }
 
                     if ($LabelStacked) {
                         $this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, true, $X, $Y, $Radius);
@@ -446,6 +449,7 @@ class Pie
         $Border = isset($Format["Border"]) ? $Format["Border"] : false;
         $Shadow = isset($Format["Shadow"]) ? $Format["Shadow"] : false;
         $DrawLabels = isset($Format["DrawLabels"]) ? $Format["DrawLabels"] : false;
+        $DrawLabelValues = isset($Format["DrawLabelValues"]) ? $Format["DrawLabelValues"] : null;        
         $LabelStacked = isset($Format["LabelStacked"]) ? $Format["LabelStacked"] : false;
         $LabelColor = isset($Format["LabelColor"]) ? $Format["LabelColor"] : PIE_LABEL_COLOR_MANUAL;
         $LabelR = isset($Format["LabelR"]) ? $Format["LabelR"] : 0;
@@ -971,6 +975,7 @@ class Pie
 
                 if (isset($Data["Series"][$Data["Abscissa"]]["Data"][$ID])) {
                     $Label = $Data["Series"][$Data["Abscissa"]]["Data"][$ID];
+                    if ($DrawLabelValues) { $Label .= " {$this->getDisplayValue($Values[$Key], $DrawLabelValues, $SerieSum, $Precision, $ValueSuffix)}"; }
 
                     if ($LabelStacked) {
                         $this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, true, $X, $Y, $Radius, true);
@@ -1370,6 +1375,7 @@ class Pie
         $BorderAlpha = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 100;
         $Shadow = isset($Format["Shadow"]) ? $Format["Shadow"] : false;
         $DrawLabels = isset($Format["DrawLabels"]) ? $Format["DrawLabels"] : false;
+        $DrawLabelValues = isset($Format["DrawLabelValues"]) ? $Format["DrawLabelValues"] : null;        
         $LabelStacked = isset($Format["LabelStacked"]) ? $Format["LabelStacked"] : false;
         $LabelColor = isset($Format["LabelColor"]) ? $Format["LabelColor"] : PIE_LABEL_COLOR_MANUAL;
         $LabelR = isset($Format["LabelR"]) ? $Format["LabelR"] : 0;
@@ -1610,6 +1616,7 @@ class Pie
                 $Yc = sin(($Angle - 90) * PI / 180) * $OuterRadius + $Y;
 
                 $Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+                if ($DrawLabelValues) { $Label .= " {$this->getDisplayValue($Values[$Key], $DrawLabelValues, $SerieSum, $Precision, $ValueSuffix)}"; }
 
                 if ($LabelStacked) {
                     $this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, true, $X, $Y, $OuterRadius);
@@ -1698,6 +1705,7 @@ class Pie
         $Border = isset($Format["Border"]) ? $Format["Border"] : false;
         $Shadow = isset($Format["Shadow"]) ? $Format["Shadow"] : false;
         $DrawLabels = isset($Format["DrawLabels"]) ? $Format["DrawLabels"] : false;
+        $DrawLabelValues = isset($Format["DrawLabelValues"]) ? $Format["DrawLabelValues"] : null;
         $LabelStacked = isset($Format["LabelStacked"]) ? $Format["LabelStacked"] : false;
         $LabelColor = isset($Format["LabelColor"]) ? $Format["LabelColor"] : PIE_LABEL_COLOR_MANUAL;
         $LabelR = isset($Format["LabelR"]) ? $Format["LabelR"] : 0;
