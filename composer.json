@@ -19,6 +19,7 @@
         {
             "name": "Erik Timmermans",
             "role": "Developer of additional functionality for graphs"
+        }
     ],
     "autoload": {
         "psr-4": { "CpChart\\": "src/" },
