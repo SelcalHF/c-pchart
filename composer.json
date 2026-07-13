@@ -1,5 +1,5 @@
 {
-    "name": "szymach/c-pchart",
+    "name": "selcalhf/c-pchart",
     "license": "GPL-3.0-only",
     "type": "library",
     "description": "Port of \"pChart\" library into PHP 5+",
@@ -15,7 +15,10 @@
             "name": "Piotr Szymaszek",
             "homepage": "https://github.com/szymach",
             "role": "Developer of the CpChart wrapper package"
-        }
+        },
+        {
+            "name": "Erik Timmermans",
+            "role": "Developer of additional functionality for graphs"
     ],
     "autoload": {
         "psr-4": { "CpChart\\": "src/" },
